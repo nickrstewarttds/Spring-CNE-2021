@@ -15,7 +15,7 @@ public class Coffee {
 
     @Id // primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
-    private int id;
+    private Long id;
 
     @Min(-5)
     @Max(95)
@@ -37,11 +37,11 @@ public class Coffee {
     }
 
     // getters and setters
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
