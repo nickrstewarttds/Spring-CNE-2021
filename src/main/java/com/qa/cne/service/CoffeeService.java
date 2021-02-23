@@ -27,7 +27,7 @@ public class CoffeeService {
     }
 
     public Coffee readById(Long id) {
-        Coffee thingReadFromDb = this.repo.getOne(id);
+        Coffee thingReadFromDb = this.repo.findById(id).get();
         return thingReadFromDb;
     }
 
@@ -39,7 +39,7 @@ public class CoffeeService {
     public Coffee updateById(Long id, Coffee newThing) {
 
         // grabs the thing we want to change from the db
-        Coffee oldThing = this.repo.getOne(id);
+        Coffee oldThing = this.repo.findById(id).get();
 
         // here's the object we want to plug in instead:
         oldThing.setCoffeeBeanType(newThing.getCoffeeBeanType());
