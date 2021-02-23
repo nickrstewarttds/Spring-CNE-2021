@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.qa.cne.persistence.domain.Coffee;
 import com.qa.cne.persistence.repository.CoffeeRepository;
+import com.qa.cne.service.exceptions.CoffeeNotFoundException;
 
 @Service
 public class CoffeeService {
@@ -27,7 +28,7 @@ public class CoffeeService {
     }
 
     public Coffee readById(Long id) {
-        Coffee thingReadFromDb = this.repo.findById(id).get();
+        Coffee thingReadFromDb = this.repo.findById(id).orElseThrow(CoffeeNotFoundException::new);
         return thingReadFromDb;
     }
 
@@ -39,7 +40,7 @@ public class CoffeeService {
     public Coffee updateById(Long id, Coffee newThing) {
 
         // grabs the thing we want to change from the db
-        Coffee oldThing = this.repo.findById(id).get();
+        Coffee oldThing = this.repo.findById(id).orElseThrow(CoffeeNotFoundException::new);
 
         // here's the object we want to plug in instead:
         oldThing.setCoffeeBeanType(newThing.getCoffeeBeanType());
@@ -57,6 +58,16 @@ public class CoffeeService {
         // checks if that object we tried to delete still exists
         return !this.repo.existsById(id);
 
+    }
+
+    // find by country
+    public Coffee findByCountryOfOrigin(String countryOfOrigin) {
+        return this.repo.findCoffeeByCountryOfOrigin(countryOfOrigin);
+    }
+
+    // find by temperature
+    public Coffee findByTemperature(int temperature) {
+        return this.repo.findCoffeeByTemperature(temperature);
     }
 
 }

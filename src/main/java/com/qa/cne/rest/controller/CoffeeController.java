@@ -44,6 +44,20 @@ public class CoffeeController {
         return ResponseEntity.ok(returnedObject);
     }
 
+    // findByCountry
+    @GetMapping("/read/byCountry/{countryOfOrigin}")
+    public ResponseEntity<Coffee> findByCountryOfOrigin(@PathVariable String countryOfOrigin) {
+        Coffee found = this.service.findByCountryOfOrigin(countryOfOrigin);
+        return ResponseEntity.ok(found);
+    }
+
+    // findByTemperature
+    @GetMapping("/read/byTemperature/{temperature}")
+    public ResponseEntity<Coffee> findByTemperature(@PathVariable int temperature) {
+        Coffee found = this.service.findByTemperature(temperature);
+        return ResponseEntity.ok(found);
+    }
+
     // readAll
     @GetMapping("/readAll")
     public ResponseEntity<List<Coffee>> readAll() {
