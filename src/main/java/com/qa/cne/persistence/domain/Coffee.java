@@ -36,6 +36,10 @@ public class Coffee {
         this.countryOfOrigin = countryOfOrigin;
     }
 
+    public Coffee() {
+
+    }
+
     // getters and setters
     public Long getId() {
         return id;
