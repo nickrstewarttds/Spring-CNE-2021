@@ -51,6 +51,7 @@ public class DeveloperService {
     public DeveloperDTO updateById(Long id, DeveloperDTO developerDTO) {
         Developer toUpdate = this.repo.findById(id).orElseThrow(DeveloperNotFoundException::new);
         toUpdate.setName(developerDTO.getName());
+        toUpdate.setJobTitle(developerDTO.getJobTitle());
         MappingUtils.mergeNotNull(developerDTO, toUpdate);
         return this.mapToDto(this.repo.save(toUpdate));
     }
