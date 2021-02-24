@@ -25,22 +25,25 @@ public class CoffeeService {
         this.mapper = mapper;
     }
 
+    private CoffeeDTO mapToDto(Coffee coffee) {
+        return this.mapper.map(coffee, CoffeeDTO.class);
+    }
+
     public CoffeeDTO create(Coffee coffee) {
         Coffee created = this.repo.save(coffee);
-        CoffeeDTO converted = this.mapper.map(created, CoffeeDTO.class);
+        CoffeeDTO converted = this.mapToDto(created);
         return converted;
     }
 
     public CoffeeDTO readById(Long id) {
         Coffee thingReadFromDb = this.repo.findById(id).orElseThrow(CoffeeNotFoundException::new);
-        CoffeeDTO converted = this.mapper.map(thingReadFromDb, CoffeeDTO.class);
+        CoffeeDTO converted = this.mapToDto(thingReadFromDb);
         return converted;
     }
 
     public List<CoffeeDTO> readAll() {
         List<Coffee> thingsReadFromDb = this.repo.findAll();
-        List<CoffeeDTO> convertedList = thingsReadFromDb.stream()
-                .map(x -> this.mapper.map(Coffee.class, CoffeeDTO.class)).collect(Collectors.toList());
+        List<CoffeeDTO> convertedList = thingsReadFromDb.stream().map(this::mapToDto).collect(Collectors.toList());
         return convertedList;
     }
 
@@ -56,7 +59,7 @@ public class CoffeeService {
 
         // saves the changed object to the db
         Coffee thingToReturn = this.repo.save(oldThing);
-        CoffeeDTO convertedThingToReturn = this.mapper.map(thingToReturn, CoffeeDTO.class);
+        CoffeeDTO convertedThingToReturn = this.mapToDto(thingToReturn);
         return convertedThingToReturn;
     }
 

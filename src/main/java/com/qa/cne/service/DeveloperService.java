@@ -25,22 +25,25 @@ public class DeveloperService {
         this.mapper = mapper;
     }
 
+    private DeveloperDTO mapToDto(Developer developer) {
+        return this.mapper.map(developer, DeveloperDTO.class);
+    }
+
     public DeveloperDTO create(Developer developer) {
         Developer created = this.repo.save(developer);
-        DeveloperDTO converted = this.mapper.map(created, DeveloperDTO.class);
+        DeveloperDTO converted = this.mapToDto(created);
         return converted;
     }
 
     public DeveloperDTO readById(Long id) {
         Developer thingReadFromDb = this.repo.findById(id).orElseThrow(DeveloperNotFoundException::new);
-        DeveloperDTO converted = this.mapper.map(thingReadFromDb, DeveloperDTO.class);
+        DeveloperDTO converted = this.mapToDto(thingReadFromDb);
         return converted;
     }
 
     public List<DeveloperDTO> readAll() {
         List<Developer> thingsReadFromDb = this.repo.findAll();
-        List<DeveloperDTO> convertedList = thingsReadFromDb.stream()
-                .map(x -> this.mapper.map(Developer.class, DeveloperDTO.class)).collect(Collectors.toList());
+        List<DeveloperDTO> convertedList = thingsReadFromDb.stream().map(this::mapToDto).collect(Collectors.toList());
         return convertedList;
     }
 
@@ -55,7 +58,7 @@ public class DeveloperService {
 
         // saves the changed object to the db
         Developer thingToReturn = this.repo.save(oldThing);
-        DeveloperDTO convertedThingToReturn = this.mapper.map(thingToReturn, DeveloperDTO.class);
+        DeveloperDTO convertedThingToReturn = this.mapToDto(thingToReturn);
         return convertedThingToReturn;
     }
 
