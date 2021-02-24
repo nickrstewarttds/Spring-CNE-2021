@@ -3,8 +3,6 @@ package com.qa.cne.rest.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.qa.cne.persistence.domain.Coffee;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +17,7 @@ public class DeveloperDTO {
     private Long id;
     private String name;
     private String jobTitle;
-    private List<Coffee> coffee = new ArrayList<>();
+    private List<CoffeeDTO> coffee = new ArrayList<>();
 
 //    {
 //        "id":1,
