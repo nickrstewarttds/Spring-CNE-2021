@@ -11,6 +11,7 @@ import com.qa.cne.persistence.domain.Developer;
 import com.qa.cne.persistence.repository.DeveloperRepository;
 import com.qa.cne.rest.dto.DeveloperDTO;
 import com.qa.cne.service.exceptions.DeveloperNotFoundException;
+import com.qa.cne.utils.MappingUtils;
 
 @Service
 public class DeveloperService {
@@ -47,19 +48,11 @@ public class DeveloperService {
         return convertedList;
     }
 
-    public DeveloperDTO updateById(Long id, DeveloperDTO newThing) {
-
-        // grabs the thing we want to change from the db
-        Developer oldThing = this.repo.findById(id).orElseThrow(DeveloperNotFoundException::new);
-
-        // here's the object we want to plug in instead:
-        oldThing.setName(newThing.getName());
-        oldThing.setJobTitle(newThing.getJobTitle());
-
-        // saves the changed object to the db
-        Developer thingToReturn = this.repo.save(oldThing);
-        DeveloperDTO convertedThingToReturn = this.mapToDto(thingToReturn);
-        return convertedThingToReturn;
+    public DeveloperDTO updateById(Long id, DeveloperDTO developerDTO) {
+        Developer toUpdate = this.repo.findById(id).orElseThrow(DeveloperNotFoundException::new);
+        toUpdate.setName(developerDTO.getName());
+        MappingUtils.mergeNotNull(developerDTO, toUpdate);
+        return this.mapToDto(this.repo.save(toUpdate));
     }
 
     public boolean deleteById(Long id) {
