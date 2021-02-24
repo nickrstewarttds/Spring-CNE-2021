@@ -8,7 +8,14 @@ import javax.persistence.Id;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Coffee {
 
     // variables
@@ -27,57 +34,4 @@ public class Coffee {
 
     @Column
     private String countryOfOrigin;
-
-    // constructors
-    public Coffee(int temperature, String coffeeBeanType, String countryOfOrigin) {
-        super();
-        this.temperature = temperature;
-        this.coffeeBeanType = coffeeBeanType;
-        this.countryOfOrigin = countryOfOrigin;
-    }
-
-    public Coffee() {
-
-    }
-
-    // getters and setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(int temperature) {
-        this.temperature = temperature;
-    }
-
-    public String getCoffeeBeanType() {
-        return coffeeBeanType;
-    }
-
-    public void setCoffeeBeanType(String coffeeBeanType) {
-        this.coffeeBeanType = coffeeBeanType;
-    }
-
-    public String getCountryOfOrigin() {
-        return countryOfOrigin;
-    }
-
-    public void setCountryOfOrigin(String countryOfOrigin) {
-        this.countryOfOrigin = countryOfOrigin;
-    }
-
-    // toString
-    @Override
-    public String toString() {
-        return String.format("Coffee [id=%s, temperature=%s, coffeeBeanType=%s, countryOfOrigin=%s]", id, temperature,
-                coffeeBeanType, countryOfOrigin);
-    }
-
 }
