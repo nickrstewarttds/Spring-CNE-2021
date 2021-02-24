@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.qa.cne.persistence.domain.Coffee;
+import com.qa.cne.rest.dto.CoffeeDTO;
 import com.qa.cne.service.CoffeeService;
 
 @RestController
@@ -32,48 +33,48 @@ public class CoffeeController {
 
     // create
     @PostMapping("/create")
-    public ResponseEntity<Coffee> create(@RequestBody Coffee coffee) {
-        Coffee createdObject = this.service.create(coffee);
+    public ResponseEntity<CoffeeDTO> create(@RequestBody Coffee coffee) {
+        CoffeeDTO createdObject = this.service.create(coffee);
         return new ResponseEntity<>(createdObject, HttpStatus.CREATED); // 201
     }
 
     // readById
     @GetMapping("/read/{id}")
-    public ResponseEntity<Coffee> readById(@PathVariable Long id) {
-        Coffee returnedObject = this.service.readById(id);
+    public ResponseEntity<CoffeeDTO> readById(@PathVariable Long id) {
+        CoffeeDTO returnedObject = this.service.readById(id);
         return ResponseEntity.ok(returnedObject);
     }
 
     // findByCountry
     @GetMapping("/read/byCountry/{countryOfOrigin}")
-    public ResponseEntity<Coffee> findByCountryOfOrigin(@PathVariable String countryOfOrigin) {
-        Coffee found = this.service.findByCountryOfOrigin(countryOfOrigin);
+    public ResponseEntity<CoffeeDTO> findByCountryOfOrigin(@PathVariable String countryOfOrigin) {
+        CoffeeDTO found = this.service.findByCountryOfOrigin(countryOfOrigin);
         return ResponseEntity.ok(found);
     }
 
     // findByTemperature
     @GetMapping("/read/byTemperature/{temperature}")
-    public ResponseEntity<Coffee> findByTemperature(@PathVariable int temperature) {
-        Coffee found = this.service.findByTemperature(temperature);
+    public ResponseEntity<CoffeeDTO> findByTemperature(@PathVariable int temperature) {
+        CoffeeDTO found = this.service.findByTemperature(temperature);
         return ResponseEntity.ok(found);
     }
 
     // readAll
     @GetMapping("/readAll")
-    public ResponseEntity<List<Coffee>> readAll() {
+    public ResponseEntity<List<CoffeeDTO>> readAll() {
         return ResponseEntity.ok(this.service.readAll()); // 200
     }
 
     // updateById
     @PutMapping("/update/{id}")
-    public ResponseEntity<Coffee> updateById(@PathVariable Long id, @RequestBody Coffee coffee) {
-        Coffee updatedObject = this.service.updateById(id, coffee);
+    public ResponseEntity<CoffeeDTO> updateById(@PathVariable Long id, @RequestBody CoffeeDTO coffeeDto) {
+        CoffeeDTO updatedObject = this.service.updateById(id, coffeeDto);
         return new ResponseEntity<>(updatedObject, HttpStatus.ACCEPTED); // 202
     }
 
     // deleteById
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Coffee> deleteById(@PathVariable Long id) {
+    public ResponseEntity<CoffeeDTO> deleteById(@PathVariable Long id) {
         if (this.service.deleteById(id)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
         } else {

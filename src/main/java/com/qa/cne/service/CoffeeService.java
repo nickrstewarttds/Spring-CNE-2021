@@ -1,43 +1,50 @@
 package com.qa.cne.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.qa.cne.persistence.domain.Coffee;
 import com.qa.cne.persistence.repository.CoffeeRepository;
+import com.qa.cne.rest.dto.CoffeeDTO;
 import com.qa.cne.service.exceptions.CoffeeNotFoundException;
 
 @Service
 public class CoffeeService {
 
     private CoffeeRepository repo;
+    private ModelMapper mapper;
 
     @Autowired
-    public CoffeeService(CoffeeRepository repo) {
+    public CoffeeService(CoffeeRepository repo, ModelMapper mapper) {
         super();
         this.repo = repo;
+        this.mapper = mapper;
     }
 
-    // methods
-
-    public Coffee create(Coffee coffee) {
+    public CoffeeDTO create(Coffee coffee) {
         Coffee created = this.repo.save(coffee);
-        return created;
+        CoffeeDTO converted = this.mapper.map(created, CoffeeDTO.class);
+        return converted;
     }
 
-    public Coffee readById(Long id) {
+    public CoffeeDTO readById(Long id) {
         Coffee thingReadFromDb = this.repo.findById(id).orElseThrow(CoffeeNotFoundException::new);
-        return thingReadFromDb;
+        CoffeeDTO converted = this.mapper.map(thingReadFromDb, CoffeeDTO.class);
+        return converted;
     }
 
-    public List<Coffee> readAll() {
+    public List<CoffeeDTO> readAll() {
         List<Coffee> thingsReadFromDb = this.repo.findAll();
-        return thingsReadFromDb;
+        List<CoffeeDTO> convertedList = thingsReadFromDb.stream()
+                .map(x -> this.mapper.map(Coffee.class, CoffeeDTO.class)).collect(Collectors.toList());
+        return convertedList;
     }
 
-    public Coffee updateById(Long id, Coffee newThing) {
+    public CoffeeDTO updateById(Long id, CoffeeDTO newThing) {
 
         // grabs the thing we want to change from the db
         Coffee oldThing = this.repo.findById(id).orElseThrow(CoffeeNotFoundException::new);
@@ -48,7 +55,9 @@ public class CoffeeService {
         oldThing.setTemperature(newThing.getTemperature());
 
         // saves the changed object to the db
-        return this.repo.save(oldThing);
+        Coffee thingToReturn = this.repo.save(oldThing);
+        CoffeeDTO convertedThingToReturn = this.mapper.map(thingToReturn, CoffeeDTO.class);
+        return convertedThingToReturn;
     }
 
     public boolean deleteById(Long id) {
@@ -61,13 +70,13 @@ public class CoffeeService {
     }
 
     // find by country
-    public Coffee findByCountryOfOrigin(String countryOfOrigin) {
-        return this.repo.findCoffeeByCountryOfOrigin(countryOfOrigin);
+    public CoffeeDTO findByCountryOfOrigin(String countryOfOrigin) {
+        return this.mapper.map(this.repo.findCoffeeByCountryOfOrigin(countryOfOrigin), CoffeeDTO.class);
     }
 
     // find by temperature
-    public Coffee findByTemperature(int temperature) {
-        return this.repo.findCoffeeByTemperature(temperature);
+    public CoffeeDTO findByTemperature(int temperature) {
+        return this.mapper.map(this.repo.findCoffeeByTemperature(temperature), CoffeeDTO.class);
     }
 
 }
